@@ -1,5 +1,6 @@
 const express = require("express");
 const router=express.Router()
+const {data}=require("./CourseTestDT")
 
 router.get("/",(req,res)=>{
 
@@ -7,23 +8,27 @@ router.get("/",(req,res)=>{
     //sikkerhets sjekk (sql injection etc)
     //lagre data i analyse database
     //importer data fra app database (kurs tabell)
-    console.log(req.query)
-    var search_dt=[];
+
+    var result_dt=[];
+    var finns=false;
     if(search_query && search_query!=" " && search_query!="null"){
-        search_dt=[
-            {name:"calculus1"},
-            {name:"calculus2"},
-            {name:"quantum field theory"},
-            {name:"vector calculus"},
-            {name:"biochemistry"},
-            {name:"physical chemistry"},
-            {name:"neural networks in javascript"},
-            {name:"statistical mechanics"},
-            {name:"physiology 101"},
-        ]
+        //dette skal skje i mySQL select statement
+        data.forEach((kurs)=>{
+            if(kurs.name.includes(search_query)){
+                finns=true;
+                result_dt.push(kurs)
+            }
+        })
+
+        if(finns){
+            return res.status(200).json(result_dt)
+        } else{
+            //dette skal fjernes når antall kurs øker
+            return res.status(200).json(data)
+        }
     }
 
-    res.status(200).json(search_dt)
+    res.status(200).json([])
 })
 
 module.exports = router;
