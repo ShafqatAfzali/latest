@@ -4,6 +4,7 @@ const {data}=require("./CourseTestDT")
 
 router.get("/",(req,res)=>{
 
+    const page=req.query.p;
     const search_query=req.query.q;
     //sikkerhets sjekk (sql injection etc)
     //lagre data i analyse database
