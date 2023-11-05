@@ -15,8 +15,8 @@ server.use(express.urlencoded({ extended: true }))
 server.use(cookie_parse());
 
 
-server.use("/search",search)
-server.use("/course",course)
+server.use("/api/search",search)
+server.use("/api/course",course)
 
 server.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
