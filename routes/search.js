@@ -3,9 +3,13 @@ const router=express.Router()
 const {data}=require("./CourseTestDT")
 
 router.get("/",(req,res)=>{
-
     const page=req.query.p;
     const search_query=req.query.q;
+    const topic=req.query.topic;
+    const lowest_price=req.query.low_P;
+    const highest_price=req.query.high_P;
+    const lowest_rating=req.query.low_R;
+    const highest_rating=req.query.high_R;
     //sikkerhets sjekk (sql injection etc)
     //lagre data i analyse database
     //importer data fra app database (kurs tabell)
