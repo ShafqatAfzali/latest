@@ -3,6 +3,7 @@ const router=express.Router()
 const {data}=require("./CourseTestDT")
 
 router.get("/",(req,res)=>{
+
     const page=req.query.p;
     const search_query=req.query.q;
     const topic=req.query.topic;
@@ -13,7 +14,6 @@ router.get("/",(req,res)=>{
     //sikkerhets sjekk (sql injection etc)
     //lagre data i analyse database
     //importer data fra app database (kurs tabell)
-
     var result_dt=[];
     var finns=false;
     if(search_query && search_query!=" " && search_query!="null"){
@@ -26,10 +26,18 @@ router.get("/",(req,res)=>{
         })
 
         if(finns){
-            return res.status(200).json(result_dt)
+            const upper_antall=30*Number(page);
+            const lower_antall=30*(Number(page)-1);
+            const antall_page=Math.ceil(result_dt.length/30);
+
+            return res.status(200).json({data:(result_dt.slice(lower_antall,upper_antall)), antall_page:antall_page})
         } else{
             //dette skal fjernes når antall kurs øker
-            return res.status(200).json(data)
+            const upper_antall=30*Number(page);
+            const lower_antall=30*(Number(page)-1);
+            const antall_page=Math.ceil(data.length/30);
+            
+            return res.status(200).json({data:(data.slice(lower_antall,upper_antall)), antall_page:antall_page})
         }
     }
 
